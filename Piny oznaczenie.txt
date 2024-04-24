@@ -1,0 +1,9 @@
+Wyświetlacz:
+LED	3,3v
+SCK	g18
+SDA	g23
+A0(DIN)	g2
+RESET	g4
+CS	g15
+GND gnd
+VCC 5v
