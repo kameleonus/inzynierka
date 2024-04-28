@@ -13,17 +13,11 @@
 #define TFT_CS         15
 #define TFT_RST        4
 #define TFT_DC         2
-//Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_RST);
-//U8G2_FOR_ADAFRUIT_GFX u8g2_for_adafruit_gfx;
+
 TFT_eSPI tft = TFT_eSPI();
 
 Audio audio;
-//String ssid = "Wi-Fi-2284";
-//tune in
-//String password = "EmLcbnEsed"; 
-//String ssid = "Redmi Note 10S";
-//String password = "Gierczak1"; 
-char* Stacje[20][2] = {{"Jedynka","http://mp3.polskieradio.pl:8900/;"},{"Dwojka","http://mp3.polskieradio.pl:8902/;"},{"RMF FM","http://195.150.20.242:8000/rmf_fm"},{"Radio ZET","http://zet090-02.cdn.eurozet.pl:8404/;"},
+char* Stacje[20][2] = {{"Jedynka","http://mp3.polskieradio.pl:8900/;"},{"Dwójka","http://mp3.polskieradio.pl:8902/;"},{"RMF FM","http://195.150.20.242:8000/rmf_fm"},{"Radio ZET","http://zet090-02.cdn.eurozet.pl:8404/;"},
 {"Radio Złote Przeboje","http://poznan7.radio.pionier.net.pl:8000/tuba9-1.mp3"},{"VIA - Katolickie Radio Rzeszów","http://62.133.128.18:8040/;"}};
 
 AsyncWebServer server(80);
@@ -31,7 +25,7 @@ AsyncWebServer server(80);
 const char* PARAM_INPUT_1 = "station";
 const char* PARAM_INPUT_2 = "newName";
 const char* PARAM_INPUT_3 = "newLink";
-int numerator;
+int numerator=2;
 String processor(const String& var){
   String tableContent;
   int i=0;
@@ -95,7 +89,7 @@ void setup() {
     tft.setRotation(3);
     tft.loadFont(coolverticarg12);
     tft.setTextSize(1);
- 
+    tft.setTextWrap(true);
   bool res;
   res = wm.autoConnect("Radio Internetowe AP","password");
   tft.println("Nazwa sieci: Radio Internetowe AP");
@@ -150,8 +144,11 @@ server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
 void loop() {
   
   audio.loop();
+
  
 }
-void audio_showstation(const char * info){tft.fillScreen(TFT_BLACK);tft.setCursor(0,0);Serial.print("\nStacja: ");tft.print("\nStacja: ");Serial.print(info);tft.print(Stacje[numerator][0]);}
-void audio_showstreamtitle(const char *info){tft.fillRect(0, 40, 160,  70, TFT_BLACK);tft.setCursor(100, 40);Serial.print("\nTytół:\n");tft.print("\nTytół:\n");Serial.print(info);tft.print(info);}
+void audio_showstation(const char * info){
+    tft.fillScreen(TFT_BLACK);tft.setCursor(0,0);Serial.print("\nStacja: ");tft.print("\n");Serial.print(info);tft.print(Stacje[numerator][0]);tft.drawRect(0,45,160,5,TFT_DARKCYAN);}
+void audio_showstreamtitle(const char *info){
+    tft.fillRect(0, 50, 160,  70, TFT_BLACK);tft.setCursor(100, 40);Serial.print("\nTytół:\n");tft.print("\n");Serial.print(info);tft.print(info);}
 
